@@ -17,7 +17,7 @@ kubectl apply -f "https://raw.githubusercontent.com/davidvossel/hostpath-pvc-vm-
 
 This gives you VM running that consumes the PVC you just created
 ```
-kubectl apply -f "https://github.com/davidvossel/hostpath-pvc-vm-disks-examples/blob/master/vm-examples/vm-cirros.yaml"
+kubectl apply -f "https://raw.githubusercontent.com/davidvossel/hostpath-pvc-vm-disks-examples/master/vm-examples/vm-cirros.yaml"
 ```
 
 # KubeVirt PVC Disk Imports for Dev Environments
