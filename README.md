@@ -1,5 +1,25 @@
 **!!!THIS IS FOR DEVELOPMENT AND ONLY WORKS ON SINGLE NODE CLUSTERS!!!**
 
+# TL;DR
+
+Start a fresh cluster in the KubeVirt src tree.
+```
+export KUBEVIRT_NUM_NODES=1
+make cluster-up && make cluster-sync
+```
+
+Install magic hostpath storage class, CDI, and post a PVC that will have cirros imported to it. 
+```
+kubectl apply -f "https://raw.githubusercontent.com/davidvossel/hostpath-pvc-vm-disks-examples/master/storage-setup/install.yaml"
+kubectl apply -f "https://raw.githubusercontent.com/davidvossel/hostpath-pvc-vm-disks-examples/master/cdi-setup/install.yaml"
+kubectl apply -f "https://raw.githubusercontent.com/davidvossel/hostpath-pvc-vm-disks-examples/master/vm-examples/pvc-cirros.yaml"
+```
+
+This gives you VM running that consumes the PVC you just created
+```
+kubectl apply -f "https://github.com/davidvossel/hostpath-pvc-vm-disks-examples/blob/master/vm-examples/vm-cirros.yaml"
+```
+
 # KubeVirt PVC Disk Imports for Dev Environments
 
 This gives developers a path for testing KubeVirt PVC disk import work flows
@@ -31,9 +51,10 @@ kubectl apply -f "https://raw.githubusercontent.com/davidvossel/hostpath-pvc-vm-
 ## Import Disk and Start VM.
 
 
-Example PVC: Post this spec, and watch the CDI automatically spin up a pod to
-inject the PV with the cirros disk.
-
+Example PVC: Post the spec below. The hostpath storageclass provisioner will
+dynamically create a PV to satisfy the claim. After that, watch the CDI
+deployment automaticall automatically spin up a pod to inject the PV
+with the cirros disk.
 ```
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -52,8 +73,8 @@ spec:
 
 ```
 
-Example VM: Once CDI pod is done, post this manifest and you can start a VM
-using the PVC CDI imported to. 
+Example VM: Once CDI pod is done, post the manifest below and you can start a
+VM running the Cirros image that CDI imported to the PV. 
 
 ```
 apiVersion: kubevirt.io/v1alpha1
