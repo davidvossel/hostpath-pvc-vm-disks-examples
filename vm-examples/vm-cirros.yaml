@@ -20,6 +20,6 @@ spec:
   volumes:
   - name: pvcvolume
     persistentVolumeClaim:
-      claimName: golden-pvc
+      claimName: cirros-pvc
 status: {}
 
